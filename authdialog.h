@@ -19,8 +19,14 @@ public:
 private slots:
     void on_authButton_clicked();
 
+    void on_signUpCheckBox_stateChanged(int arg1);
+
+    void on_AuthDialog_finished(int result);
+
 private:
     Ui::AuthDialog *ui;
+    bool is_signup=false;
+    QSettings settings;
 };
 
 #endif // AUTHDIALOG_H

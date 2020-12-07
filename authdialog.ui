@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>200</height>
+    <width>320</width>
+    <height>216</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -19,11 +25,15 @@
   <property name="maximumSize">
    <size>
     <width>400</width>
-    <height>200</height>
+    <height>400</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Auth|Sign Up</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/assets/assets/img/lock.png</normaloff>:/assets/assets/img/lock.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">background: rgb(24, 28, 45)</string>
@@ -86,7 +96,7 @@ font-size: 14px;</string>
       </widget>
      </item>
      <item>
-      <widget class="QTextEdit" name="passCodeInput">
+      <widget class="QTextEdit" name="passwordInput">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -110,22 +120,74 @@ font-size: 14px;</string>
 border-radius: 8px;
 color: #C1C3D0;
 font: 9pt &quot;Liberation Serif&quot;;
-font-size: 14px;</string>
+font-size: 14px;
+margin-top: 4px;</string>
        </property>
        <property name="placeholderText">
-        <string>Passcode</string>
+        <string>Password</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="passwordRepeatInput">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background: rgb(18, 22, 34);
+border-radius: 8px;
+color: #C1C3D0;
+font: 9pt &quot;Liberation Serif&quot;;
+font-size: 14px;
+margin-top: 4px;</string>
+       </property>
+       <property name="placeholderText">
+        <string>Repeat password</string>
+       </property>
+      </widget>
+     </item>
+     <item alignment="Qt::AlignLeft">
+      <widget class="QCheckBox" name="signUpCheckBox">
+       <property name="styleSheet">
+        <string notr="true">background: rgb(193, 195, 208);
+color: #121622;
+font: 9pt &quot;Liberation Serif&quot;;
+font-size: 14px;
+border-radius: 8px;
+padding: 4px;
+margin-top: 4px;</string>
+       </property>
+       <property name="text">
+        <string>Sign up</string>
        </property>
       </widget>
      </item>
      <item alignment="Qt::AlignHCenter">
       <widget class="QPushButton" name="authButton">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="styleSheet">
         <string notr="true">color: rgb(255, 255, 255);
 border-radius: 8px;
-padding-top: 4px;
-padding-bottom: 4px;
+padding-top: 6px;
+padding-bottom: 6px;
 padding-left: 8px;
-margin-top: 8px;
 padding-right: 8px;
 background: #5E6FCA;</string>
        </property>
@@ -138,6 +200,8 @@ background: #5E6FCA;</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

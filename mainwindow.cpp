@@ -11,8 +11,10 @@ MainWindow::MainWindow(QWidget *parent)
     QString token = settings.value("token", "not_stated").toString();
     if (token == "not_stated") {
        AuthDialog authdialog(this);
-       authdialog.setAttribute(Qt::WA_QuitOnClose);
-       authdialog.exec();
+       int dialog_code = authdialog.exec();
+       if (dialog_code == 0) {
+           qApp->quit();
+       }
     }
 }
 
