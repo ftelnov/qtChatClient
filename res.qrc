@@ -2,4 +2,7 @@
     <qresource prefix="/assets">
         <file>assets/img/lock.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>assets/img/notifi.png</file>
+    </qresource>
 </RCC>

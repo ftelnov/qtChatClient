@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
        AuthDialog authdialog(this);
        int dialog_code = authdialog.exec();
        if (dialog_code == 0) {
-           qApp->quit();
+           exit(0);
        }
     }
 }

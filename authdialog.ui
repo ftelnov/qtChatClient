@@ -96,22 +96,10 @@ font-size: 14px;</string>
       </widget>
      </item>
      <item>
-      <widget class="QTextEdit" name="passwordInput">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+      <widget class="QLineEdit" name="passwordRepeatInput">
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
          <height>30</height>
         </size>
        </property>
@@ -122,6 +110,9 @@ color: #C1C3D0;
 font: 9pt &quot;Liberation Serif&quot;;
 font-size: 14px;
 margin-top: 4px;</string>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
        </property>
        <property name="placeholderText">
         <string>Password</string>
@@ -129,19 +120,10 @@ margin-top: 4px;</string>
       </widget>
      </item>
      <item>
-      <widget class="QTextEdit" name="passwordRepeatInput">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
+      <widget class="QLineEdit" name="passwordInput">
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
          <height>30</height>
         </size>
        </property>
@@ -152,6 +134,9 @@ color: #C1C3D0;
 font: 9pt &quot;Liberation Serif&quot;;
 font-size: 14px;
 margin-top: 4px;</string>
+       </property>
+       <property name="echoMode">
+        <enum>QLineEdit::Password</enum>
        </property>
        <property name="placeholderText">
         <string>Repeat password</string>

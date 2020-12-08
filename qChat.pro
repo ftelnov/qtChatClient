@@ -18,15 +18,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     authdialog.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    notificationdialog.cpp
 
 HEADERS += \
     authdialog.h \
-    mainwindow.h
+    mainwindow.h \
+    notificationdialog.h
 
 FORMS += \
     authdialog.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    notificationdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

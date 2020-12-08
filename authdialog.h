@@ -27,6 +27,7 @@ private:
     Ui::AuthDialog *ui;
     bool is_signup=false;
     QSettings settings;
+    void pushNotification(QString message);
 };
 
 #endif // AUTHDIALOG_H
