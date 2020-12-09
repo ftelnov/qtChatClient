@@ -64,16 +64,10 @@ font-size: 18px;</string>
       </widget>
      </item>
      <item>
-      <widget class="QTextEdit" name="authNicknameInput">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+      <widget class="QLineEdit" name="authNicknameInput">
        <property name="minimumSize">
         <size>
-         <width>300</width>
+         <width>0</width>
          <height>30</height>
         </size>
        </property>
@@ -88,7 +82,8 @@ font-size: 18px;</string>
 border-radius: 8px;
 color: #C1C3D0;
 font: 9pt &quot;Liberation Serif&quot;;
-font-size: 14px;</string>
+font-size: 14px;
+margin-top: 4px;</string>
        </property>
        <property name="placeholderText">
         <string>Some awesome nickname</string>
@@ -96,7 +91,7 @@ font-size: 14px;</string>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="passwordRepeatInput">
+      <widget class="QLineEdit" name="passwordInput">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -120,7 +115,7 @@ margin-top: 4px;</string>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="passwordInput">
+      <widget class="QLineEdit" name="passwordRepeatInput">
        <property name="minimumSize">
         <size>
          <width>0</width>
