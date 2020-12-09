@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "addcontactdialog.h"
 #include <QtDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -23,3 +24,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_addContactButton_clicked()
+{
+    AddContactDialog dialog(this);
+    dialog.exec();
+}

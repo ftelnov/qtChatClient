@@ -81,6 +81,7 @@ font-size: 18px;</string>
         <string notr="true">background: rgb(18, 22, 34);
 border-radius: 8px;
 color: #C1C3D0;
+padding-left: 6px;
 font: 9pt &quot;Liberation Serif&quot;;
 font-size: 14px;
 margin-top: 4px;</string>
@@ -101,6 +102,7 @@ margin-top: 4px;</string>
        <property name="styleSheet">
         <string notr="true">background: rgb(18, 22, 34);
 border-radius: 8px;
+padding-left: 6px;
 color: #C1C3D0;
 font: 9pt &quot;Liberation Serif&quot;;
 font-size: 14px;
@@ -128,7 +130,8 @@ border-radius: 8px;
 color: #C1C3D0;
 font: 9pt &quot;Liberation Serif&quot;;
 font-size: 14px;
-margin-top: 4px;</string>
+margin-top: 4px;
+padding-left: 6px;</string>
        </property>
        <property name="echoMode">
         <enum>QLineEdit::Password</enum>

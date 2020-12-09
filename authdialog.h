@@ -31,7 +31,6 @@ private:
     bool is_signup=false;
     QSettings settings;
     void pushNotification(QString message);
-    QNetworkAccessManager* manager = nullptr;
     QString baseUrl = "http://127.0.0.1:8000/";
 };
 

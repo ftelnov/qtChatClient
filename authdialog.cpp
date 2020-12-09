@@ -15,7 +15,6 @@ AuthDialog::AuthDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->ui->passwordRepeatInput->hide();
-    this->manager = new QNetworkAccessManager(this);
 }
 
 AuthDialog::~AuthDialog()
@@ -44,19 +43,31 @@ void AuthDialog::on_authButton_clicked()
             return;
         }
         if(containsDigit && password.length() >= 8){
+            QNetworkAccessManager* accessManager = new QNetworkAccessManager(this);
             QNetworkRequest request(QUrl(baseUrl + "api/signup/"));
             request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
             QByteArray postData;
             postData.append("nickname=" + nickname + "$");
             postData.append("password=" + password);
-            connect(this->manager, SIGNAL(finished(QNetworkReply*)), this,
+            connect(accessManager, SIGNAL(finished(QNetworkReply*)), this,
                 SLOT(signupReplyFinished(QNetworkReply*)));
-                this->manager->post(request, postData);
+               accessManager->post(request, postData);
             return;
         }
         pushNotification("Password validation failed(should has lenght >= 8 and at least 1 digit)");
     } else {
-
+        QString nickname = this->ui->authNicknameInput->text();
+        QString password = this->ui->passwordInput->text();
+        QNetworkAccessManager* accessManager = new QNetworkAccessManager(this);
+        QNetworkRequest request(QUrl(baseUrl + "api/token/obtain/"));
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        QByteArray postData;
+        postData.append("nickname=" + nickname + "$");
+        postData.append("password=" + password);
+        connect(accessManager, SIGNAL(finished(QNetworkReply*)), this,
+            SLOT(signupReplyFinished(QNetworkReply*)));
+           accessManager->post(request, postData);
+        return;
     }
 }
 
@@ -67,6 +78,7 @@ void AuthDialog::pushNotification(QString message) {
 
 void AuthDialog::signupReplyFinished(QNetworkReply *reply) {
     QByteArray buffer = reply->readAll();
+    reply->deleteLater();
     QJsonDocument jsonDoc(QJsonDocument::fromJson(buffer));
     QJsonObject jsonReply = jsonDoc.object();
     if (jsonReply["result"] != 0) {
