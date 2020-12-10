@@ -33,7 +33,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="res.qrc">
-    <normaloff>:/assets/assets/img/lock.png</normaloff>:/assets/assets/img/lock.png</iconset>
+    <normaloff>:/assets/img/lock.png</normaloff>:/assets/img/lock.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">background: rgb(24, 28, 45)</string>

@@ -20,19 +20,24 @@ SOURCES += \
     authdialog.cpp \
     main.cpp \
     mainwindow.cpp \
-    notificationdialog.cpp
+    notificationdialog.cpp \
+    questiondialog.cpp \
+    utils.cpp
 
 HEADERS += \
     addcontactdialog.h \
     authdialog.h \
     mainwindow.h \
-    notificationdialog.h
+    notificationdialog.h \
+    questiondialog.h \
+    utils.h
 
 FORMS += \
     addcontactdialog.ui \
     authdialog.ui \
     mainwindow.ui \
-    notificationdialog.ui
+    notificationdialog.ui \
+    questiondialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -8,6 +8,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include "utils.h"
 
 AddContactDialog::AddContactDialog(QWidget *parent) :
     QDialog(parent),
@@ -25,36 +26,26 @@ void AddContactDialog::on_addContactButton_clicked()
 {
     QSettings settings;
     QString nickname = this->ui->friendNickname->text();
-    QString token = "Token " + settings.value("token").toString();
+    QMap<QString, QVariant> raw_data;
+    raw_data["nickname"] = nickname;
+    QNetworkRequest request = Utils::constructRequest("/contact/add/", Utils::getToken());
+    QByteArray data = Utils::constructPostData(&raw_data);
     QNetworkAccessManager* accessManager = new QNetworkAccessManager(this);
-    QNetworkRequest request(QUrl(baseUrl + "api/contact/add/"));
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization", token.toUtf8());
-    QByteArray postData;
-    postData.append(nickname);
     connect(accessManager, SIGNAL(finished(QNetworkReply*)), this,
         SLOT(addContactReplyFinished(QNetworkReply*)));
-       accessManager->post(request, postData);
+       accessManager->post(request, data);
     return;
 }
 
 void AddContactDialog::addContactReplyFinished(QNetworkReply* reply) {
     if(reply->error()) {
-        pushNotification("Something went wrong. We've got error: " + reply->errorString());
+        Utils::pushNotification(this, "Something went wrong. We've got error: " + reply->errorString());
         return;
     }
-    QByteArray buffer = reply->readAll();
-    reply->deleteLater();
-    QJsonDocument jsonDoc(QJsonDocument::fromJson(buffer));
-    QJsonObject jsonReply = jsonDoc.object();
+    QJsonObject jsonReply = Utils::getJson(reply);
     if (jsonReply["result"] != 0) {
-        pushNotification(jsonReply["error"].toString());
+        Utils::pushNotification(this, jsonReply["error"].toString());
         return;
     }
     this->accept();
-}
-
-void AddContactDialog::pushNotification(QString message) {
-    NotificationDialog dialog(message, this);
-    dialog.exec();
 }

@@ -29,9 +29,6 @@ private slots:
 private:
     Ui::AuthDialog *ui;
     bool is_signup=false;
-    QSettings settings;
-    void pushNotification(QString message);
-    QString baseUrl = "http://127.0.0.1:8000/";
 };
 
 #endif // AUTHDIALOG_H

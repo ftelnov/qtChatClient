@@ -20,6 +20,8 @@ public:
 private slots:
     void on_addContactButton_clicked();
 
+    void on_logoutButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

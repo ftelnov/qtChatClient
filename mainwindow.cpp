@@ -1,7 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "addcontactdialog.h"
+#include "questiondialog.h"
 #include <QtDebug>
+#include <QApplication>
+#include <QProcess>
+#include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,4 +33,16 @@ void MainWindow::on_addContactButton_clicked()
 {
     AddContactDialog dialog(this);
     dialog.exec();
+}
+
+void MainWindow::on_logoutButton_clicked()
+{
+    QuestionDialog dialog("Are you sure you want to continue?", this);
+    int result = dialog.exec();
+    if (result == 1) {
+        QSettings settings;
+        settings.setValue("token", "not_stated");
+        qApp->quit();
+        QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
+    }
 }

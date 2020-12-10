@@ -17,7 +17,11 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Add Contact</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/assets/img/chat.png</normaloff>:/assets/img/chat.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">background: rgb(24, 28, 45)</string>
@@ -107,6 +111,8 @@ background: #5E6FCA;</string>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

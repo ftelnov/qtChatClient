@@ -8,6 +8,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include "utils.h"
 
 AuthDialog::AuthDialog(QWidget *parent) :
     QDialog(parent),
@@ -23,12 +24,12 @@ AuthDialog::~AuthDialog()
 }
 void AuthDialog::on_authButton_clicked()
 {
+    QString nickname = this->ui->authNicknameInput->text();
+    QString password = this->ui->passwordInput->text();
     if(this->is_signup) {
-        QString nickname = this->ui->authNicknameInput->text();
-        QString password = this->ui->passwordInput->text();
         QString repeatedPassword = this->ui->passwordRepeatInput->text();
         if (nickname.length() < 4) {
-            pushNotification("Nickname lenght is invalid(should be >= 4)");
+            Utils::pushNotification(this, "Nickname lenght is invalid(should be >= 4)");
             return;
         }
         bool containsDigit = false;
@@ -39,52 +40,42 @@ void AuthDialog::on_authButton_clicked()
             }
         }
         if(repeatedPassword != password) {
-            pushNotification("Passwords do not match");
+            Utils::pushNotification(this, "Passwords do not match");
             return;
         }
         if(containsDigit && password.length() >= 8){
-            QNetworkAccessManager* accessManager = new QNetworkAccessManager(this);
-            QNetworkRequest request(QUrl(baseUrl + "api/signup/"));
-            request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-            QByteArray postData;
-            postData.append("nickname=" + nickname + "$");
-            postData.append("password=" + password);
+            QMap<QString, QVariant> r_data;
+            r_data["nickname"] = nickname;
+            r_data["password"] = password;
+            QNetworkAccessManager* accessManager = new QNetworkAccessManager(this);           
             connect(accessManager, SIGNAL(finished(QNetworkReply*)), this,
                 SLOT(signupReplyFinished(QNetworkReply*)));
-               accessManager->post(request, postData);
+               accessManager->post(Utils::constructRequest("/signup/", ""), Utils::constructPostData(&r_data));
             return;
         }
-        pushNotification("Password validation failed(should has lenght >= 8 and at least 1 digit)");
+        Utils::pushNotification(this, "Password validation failed(should has lenght >= 8 and at least 1 digit)");
     } else {
-        QString nickname = this->ui->authNicknameInput->text();
-        QString password = this->ui->passwordInput->text();
         QNetworkAccessManager* accessManager = new QNetworkAccessManager(this);
-        QNetworkRequest request(QUrl(baseUrl + "api/token/obtain/"));
-        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-        QByteArray postData;
-        postData.append("nickname=" + nickname + "$");
-        postData.append("password=" + password);
+        QMap<QString, QVariant> r_data;
+        r_data["nickname"] = nickname;
+        r_data["password"] = password;
         connect(accessManager, SIGNAL(finished(QNetworkReply*)), this,
             SLOT(signupReplyFinished(QNetworkReply*)));
-           accessManager->post(request, postData);
+           accessManager->post(Utils::constructRequest("/token/obtain/", ""), Utils::constructPostData(&r_data));
         return;
     }
 }
 
-void AuthDialog::pushNotification(QString message) {
-    NotificationDialog dialog(message, this);
-    dialog.exec();
-}
-
 void AuthDialog::signupReplyFinished(QNetworkReply *reply) {
-    QByteArray buffer = reply->readAll();
-    reply->deleteLater();
-    QJsonDocument jsonDoc(QJsonDocument::fromJson(buffer));
-    QJsonObject jsonReply = jsonDoc.object();
+    if(reply->error()) {
+        Utils::pushNotification(this, "Something went wrong. We've got error: " + reply->errorString());
+        return;
+    }
+    QJsonObject jsonReply = Utils::getJson(reply);
     if (jsonReply["result"] != 0) {
-        pushNotification(jsonReply["error"].toString());
+        Utils::pushNotification(this, jsonReply["error"].toString());
     } else {
-        settings.setValue("token", jsonReply["token"].toString());
+        Utils::updateToken(jsonReply["token"].toString());
         this->accept();
     }
 }
@@ -93,8 +84,10 @@ void AuthDialog::on_signUpCheckBox_stateChanged(int arg1)
 {
     if (arg1) {
         this->ui->passwordRepeatInput->show();
+        this->ui->authButton->setText("Sign Up");
     } else{
         this->ui->passwordRepeatInput->hide();
+        this->ui->authButton->setText("Authenticate");
     }
     this->is_signup = !this->is_signup;
 }

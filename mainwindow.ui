@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Chats</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/assets/img/chat.png</normaloff>:/assets/img/chat.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">background-color: #121622;</string>
   </property>
@@ -127,6 +131,8 @@ background: #5E6FCA;</string>
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>
