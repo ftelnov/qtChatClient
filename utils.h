@@ -16,6 +16,7 @@ public:
     static QByteArray constructPostData(QMap<QString, QVariant> *data);
     static QJsonObject getJson(QNetworkReply* reply);
     static QString getToken();
+    static QString getRawToken();
     static void updateToken(QString token);
     static void pushNotification(QWidget* ui, QString message);
 };

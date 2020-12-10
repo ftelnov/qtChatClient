@@ -22,6 +22,10 @@ private slots:
 
     void on_logoutButton_clicked();
 
+    void getMeReplyFinished(QNetworkReply* reply);
+
+    void getChatList(QNetworkReply* reply);
+
 private:
     Ui::MainWindow *ui;
 };

@@ -19,6 +19,11 @@ QString Utils::getToken(){
     return "Token " + settings.value("token").toString();
 }
 
+QString Utils::getRawToken() {
+    QSettings settings;
+    return settings.value("token").toString();
+}
+
 
 QByteArray Utils::constructPostData(QMap<QString, QVariant> *data){
     QJsonObject json;
