@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     addcontactdialog.cpp \
     authdialog.cpp \
+    chatmessage.cpp \
     chatpreview.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
 HEADERS += \
     addcontactdialog.h \
     authdialog.h \
+    chatmessage.h \
     chatpreview.h \
     mainwindow.h \
     notificationdialog.h \
@@ -37,6 +39,7 @@ HEADERS += \
 FORMS += \
     addcontactdialog.ui \
     authdialog.ui \
+    chatmessage.ui \
     chatpreview.ui \
     mainwindow.ui \
     notificationdialog.ui \

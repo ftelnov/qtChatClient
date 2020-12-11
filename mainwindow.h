@@ -5,6 +5,7 @@
 #include <QSettings>
 #include <authdialog.h>
 #include <QTimer>
+#include <chatmessage.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,10 +29,16 @@ private slots:
 
     void getChatList(QNetworkReply* reply);
 
+    void getMessagesReplyFinished(QNetworkReply* reply);
+
+    void on_sendMessageIcon_clicked();
+
 private:
     Ui::MainWindow *ui;
     void updateChatList(QJsonArray chats);
     QString selectedChatHash = "";
     QTimer* messagesTimer = nullptr;
+    void pushMessage(QLayout* layout, QJsonObject message);
+    int lmid = -1;
 };
 #endif // MAINWINDOW_H
