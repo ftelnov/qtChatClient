@@ -3,5 +3,6 @@
         <file>assets/img/notifi.png</file>
         <file>assets/img/chat.png</file>
         <file>assets/img/lock.png</file>
+        <file>assets/img/send.png</file>
     </qresource>
 </RCC>

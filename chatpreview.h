@@ -19,12 +19,15 @@ public:
     ~ChatPreview();
     QString getHash();
     void setHash(QString hash);
+    QString getName();
+    void setName(QString name);
     void setMessages(QJsonArray messages);
     void addMessages(QJsonArray messages);
 
 private:
     Ui::ChatPreview *ui;
     QString hash;
+    QString name;
     QJsonArray messages;
     int last_message_id = -1;
     void addMessage(QJsonObject message);

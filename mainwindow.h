@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSettings>
 #include <authdialog.h>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,6 +16,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+    void updateMessages();
     ~MainWindow();
 
 private slots:
@@ -29,5 +31,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     void updateChatList(QJsonArray chats);
+    QString selectedChatHash = "";
+    QTimer* messagesTimer = nullptr;
 };
 #endif // MAINWINDOW_H

@@ -7,14 +7,10 @@ ChatPreview::ChatPreview(QJsonObject chat, QWidget *parent) :
 {
     ui->setupUi(this);
     this->setHash(chat.value("hash").toString());
-    this->ui->chatName->setText(this->getHash());
-    QJsonArray users = chat.value("members").toArray();
-    int members_amount = users.size();
-    QString members = "";
-    for(int i = 0; i < members_amount; ++i) {
-        members = members + users.at(i).toObject().value("username").toString() + " ";
-    }
-    this->ui->membersIndicator->setText(members);
+    this->setName(chat.value("name").toString());
+    this->ui->chatName->setText("Name: " + this->getName());
+    int members_amount = chat.value("members").toArray().size();
+    this->ui->membersIndicator->setText(QString::number(members_amount) + " members");
 }
 
 void ChatPreview::setHash(QString hash) {
@@ -23,6 +19,14 @@ void ChatPreview::setHash(QString hash) {
 
 QString ChatPreview::getHash() {
     return this->hash;
+}
+
+QString ChatPreview::getName() {
+    return this->name;
+}
+
+void ChatPreview::setName(QString name) {
+    this->name = name;
 }
 
 void ChatPreview::setMessages(QJsonArray messages){

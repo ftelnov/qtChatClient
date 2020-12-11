@@ -69,12 +69,24 @@ void MainWindow::updateChatList(QJsonArray chats) {
 
     for(int i = 0; i < size; i++) {
         QJsonObject chat = chats.at(i).toObject();
+        if(selectedChatHash == "") {
+            selectedChatHash = chat.value("hash").toString();
+        }
         ChatPreview* chatPreview = new ChatPreview(chat, this->ui->previewsContainerWidget);
         layout->addWidget(chatPreview);
         this->ui->previewsContainer->widget()->layout()->addWidget(chatPreview);
     }
     layout->addItem(this->ui->previewsSpacer);
     this->update();
+    if (messagesTimer == nullptr) {
+        messagesTimer = new QTimer(this);
+        connect(messagesTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::updateMessages));
+        messagesTimer->start(3000);
+    }
+}
+
+
+void MainWindow::updateMessages() {
 }
 
 
