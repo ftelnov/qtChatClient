@@ -7,6 +7,7 @@
 #include <QNetworkRequest>
 #include <QObject>
 #include <QSettings>
+#include <QScrollArea>
 
 class Utils
 {

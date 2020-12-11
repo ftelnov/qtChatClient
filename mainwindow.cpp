@@ -7,6 +7,8 @@
 #include <QApplication>
 #include <QProcess>
 #include "chatpreview.h"
+#include <QListWidget>
+#include <QListWidgetItem>
 #include "utils.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -60,6 +62,22 @@ void MainWindow::getMeReplyFinished(QNetworkReply *reply){
     accessManager->get(request);
 }
 
+void MainWindow::updateChatList(QJsonArray chats) {
+    int size = chats.size();
+    QLayout* layout = this->ui->previewsContainerWidget->layout();
+    layout->removeItem(this->ui->previewsSpacer);
+
+    for(int i = 0; i < size; i++) {
+        QJsonObject chat = chats.at(i).toObject();
+        ChatPreview* chatPreview = new ChatPreview(chat, this->ui->previewsContainerWidget);
+        layout->addWidget(chatPreview);
+        this->ui->previewsContainer->widget()->layout()->addWidget(chatPreview);
+    }
+    layout->addItem(this->ui->previewsSpacer);
+    this->update();
+}
+
+
 void MainWindow::getChatList(QNetworkReply *reply){
     if (reply->error()) {
         Utils::pushNotification(this, "Something went wrong. We've got error: " + reply->errorString());
@@ -71,13 +89,7 @@ void MainWindow::getChatList(QNetworkReply *reply){
         return;
     }
     QJsonArray chats = data.value("data").toArray();
-    int size = chats.size();
-    for(int i = 0; i < size; i++) {
-        QJsonObject chat = chats.at(i).toObject();
-        ChatPreview* chatPreview = new ChatPreview(chat, this->ui->chatsPreviews->layout()->widget());
-        this->ui->chatsPreviews->layout()->addWidget(chatPreview);
-    }
-    this->ui->chatsPreviews->adjustSize();
+    this->updateChatList(chats);
 }
 
 

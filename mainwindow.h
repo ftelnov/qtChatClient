@@ -28,5 +28,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    void updateChatList(QJsonArray chats);
 };
 #endif // MAINWINDOW_H

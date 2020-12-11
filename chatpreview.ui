@@ -24,7 +24,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>300</width>
+    <width>16777215</width>
     <height>80</height>
    </size>
   </property>
@@ -55,7 +55,8 @@ border-radius: 8px;</string>
 color: rgb(193, 195, 208);
 font-weight: bold;
 font-size: 12px;
-border: none;</string>
+border: none;
+padding-left: 4px;</string>
        </property>
        <property name="text">
         <string>Some awesome name</string>
@@ -75,7 +76,8 @@ border: none;</string>
 color: rgb(193, 195, 208);
 font-weight: bold;
 font-size: 12px;
-border: none;</string>
+border: none;
+padding-left: 4px;</string>
        </property>
        <property name="readOnly">
         <bool>true</bool>

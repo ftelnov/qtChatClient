@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "notificationdialog.h"
+#include "chatpreview.h"
 
 Utils::Utils()
 {
