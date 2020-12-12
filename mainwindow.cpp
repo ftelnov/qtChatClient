@@ -79,10 +79,11 @@ void MainWindow::updateChatList(QJsonArray chats) {
     }
     for(int i = 0; i < size; i++) {
         QJsonObject chat = chats.at(i).toObject();
+        ChatPreview* chatPreview = new ChatPreview(chat, this->ui->previewsContainerWidget);
         if(selectedChatHash == "") {
             selectedChatHash = chat.value("hash").toString();
+            chatPreview->setSelected(true);
         }
-        ChatPreview* chatPreview = new ChatPreview(chat, this->ui->previewsContainerWidget);
         connect(chatPreview, SIGNAL(chatClicked(QString)), this, SLOT(chatSwitched(QString)));
         layout->addWidget(chatPreview);
     }
@@ -191,7 +192,9 @@ void MainWindow::leaveChatReplyFinished(QNetworkReply *reply){
      }
      while ((child = layout->takeAt(0)) != 0) {
         if (!child->widget()->accessibleName().isEmpty()) {
-            switchToAnotherChat(qobject_cast<ChatPreview*>(child->widget())->getHash());
+            ChatPreview* preview = qobject_cast<ChatPreview*>(child->widget());
+            preview->setSelected(true);
+            switchToAnotherChat(preview->getHash());
             break;
         }
      }

@@ -7,6 +7,8 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QStyleOption>
+#include <QPainter>
 
 namespace Ui {
 class ChatPreview;
@@ -25,6 +27,7 @@ public:
     void setName(QString name);
     void setMessages(QJsonArray messages);
     void addMessages(QJsonArray messages);
+    void setSelected(bool selected);
 signals:
     void chatClicked(QString chash);
 
@@ -32,10 +35,12 @@ private:
     Ui::ChatPreview *ui;
     QString hash;
     QString name;
+    bool selected = false;
     QJsonArray messages;
     int last_message_id = -1;
     void addMessage(QJsonObject message);
     void mousePressEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *e) override;
 };
 
 #endif // CHATPREVIEW_H

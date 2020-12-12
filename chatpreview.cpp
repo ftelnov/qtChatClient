@@ -28,6 +28,18 @@ void ChatPreview::mousePressEvent(QMouseEvent *event) {
     event->ignore();
 }
 
+void ChatPreview::paintEvent(QPaintEvent *e)
+{
+    QStyleOption opt;
+    opt.init(this);
+    QPainter p(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}
+
+void ChatPreview::setSelected(bool selected){
+    this->selected = selected;
+}
+
 QString ChatPreview::getHash() {
     return this->hash;
 }
