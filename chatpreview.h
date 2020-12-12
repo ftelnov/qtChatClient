@@ -5,6 +5,8 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QLabel>
+#include <QMouseEvent>
+#include <QDebug>
 
 namespace Ui {
 class ChatPreview;
@@ -23,6 +25,8 @@ public:
     void setName(QString name);
     void setMessages(QJsonArray messages);
     void addMessages(QJsonArray messages);
+signals:
+    void chatClicked(QString chash);
 
 private:
     Ui::ChatPreview *ui;
@@ -31,6 +35,7 @@ private:
     QJsonArray messages;
     int last_message_id = -1;
     void addMessage(QJsonObject message);
+    void mousePressEvent(QMouseEvent *event) override;
 };
 
 #endif // CHATPREVIEW_H

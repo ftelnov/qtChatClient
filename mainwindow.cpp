@@ -10,6 +10,8 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include "utils.h"
+#include "changechatnamedialog.h"
+#include "addchatmemberdialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -37,6 +39,14 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::chatListRequest() {
+    QNetworkRequest request = Utils::constructRequest("/user/chats/", Utils::getToken());
+    QNetworkAccessManager* accessManager = new QNetworkAccessManager(this);
+    connect(accessManager, SIGNAL(finished(QNetworkReply*)), this,
+        SLOT(getChatList(QNetworkReply*)));
+    accessManager->get(request);
+}
+
 void MainWindow::getMeReplyFinished(QNetworkReply *reply){
     if (reply->error()) {
         Utils::pushNotification(this, "Something went wrong. We've got error: " + reply->errorString());
@@ -55,34 +65,63 @@ void MainWindow::getMeReplyFinished(QNetworkReply *reply){
         Utils::pushNotification(this, data["error"].toString());
         return;
     }
-    QNetworkRequest request = Utils::constructRequest("/user/chats/", Utils::getToken());
-    QNetworkAccessManager* accessManager = new QNetworkAccessManager(this);
-    connect(accessManager, SIGNAL(finished(QNetworkReply*)), this,
-        SLOT(getChatList(QNetworkReply*)));
-    accessManager->get(request);
+    chatListRequest();
 }
 
 void MainWindow::updateChatList(QJsonArray chats) {
     int size = chats.size();
     QLayout* layout = this->ui->previewsContainerWidget->layout();
     layout->removeItem(this->ui->previewsSpacer);
-
+    QLayoutItem* child;
+    while ((child = layout->takeAt(0)) != 0) {
+       child->widget()->setParent(NULL);
+       delete child;
+    }
     for(int i = 0; i < size; i++) {
         QJsonObject chat = chats.at(i).toObject();
         if(selectedChatHash == "") {
             selectedChatHash = chat.value("hash").toString();
         }
         ChatPreview* chatPreview = new ChatPreview(chat, this->ui->previewsContainerWidget);
+        connect(chatPreview, SIGNAL(chatClicked(QString)), this, SLOT(chatSwitched(QString)));
         layout->addWidget(chatPreview);
-        this->ui->previewsContainer->widget()->layout()->addWidget(chatPreview);
     }
     layout->addItem(this->ui->previewsSpacer);
+    clearMessagesList();
     this->update();
     if (messagesTimer == nullptr) {
         messagesTimer = new QTimer(this);
         connect(messagesTimer, &QTimer::timeout, this, QOverload<>::of(&MainWindow::updateMessages));
         messagesTimer->start(1200);
+    } else{
+        if (size != 0 && !messagesTimer->isActive()) {
+            messagesTimer->start();
+        }
     }
+}
+
+void MainWindow::chatSwitched(QString chash){
+    this->switchToAnotherChat(chash);
+}
+
+void MainWindow::switchToAnotherChat(QString chash) {
+    messagesTimer->stop();
+    selectedChatHash = chash;
+    clearMessagesList();
+    messagesTimer->start();
+}
+
+
+void MainWindow::clearMessagesList(){
+    QLayout* layout = this->ui->messagesContainerWidget->layout();
+    layout->removeItem(this->ui->messagesSpacer);
+    QLayoutItem* child;
+    while ((child = layout->takeAt(0)) != 0) {
+       child->widget()->setParent(NULL);
+       delete child;
+    }
+    layout->addItem(this->ui->messagesSpacer);
+    lmid=-1;
 }
 
 
@@ -98,7 +137,6 @@ void MainWindow::updateMessages() {
 void MainWindow::pushMessage(QLayout* layout, QJsonObject message){
     ChatMessage* messageContainer = new ChatMessage(message.value("id").toInt(), message.value("text").toString(), message.value("author").toString(), this->ui->messagesContainerWidget);
     layout->addWidget(messageContainer);
-    this->ui->messagesContainer->widget()->layout()->addWidget(messageContainer);
 }
 
 
@@ -109,7 +147,12 @@ void MainWindow::getMessagesReplyFinished(QNetworkReply *reply) {
     }
     QJsonObject data = Utils::getJson(reply);
     if (data["result"] != 0) {
-        Utils::pushNotification(this, data["error"].toString());
+        switch(data["result"].toInt()){
+            case -2:
+                messagesTimer->stop();
+                clearMessagesList();
+                break;
+        }
         return;
     }
     QJsonArray messagesList = data.value("data").toArray();
@@ -124,6 +167,35 @@ void MainWindow::getMessagesReplyFinished(QNetworkReply *reply) {
         layout->addItem(this->ui->messagesSpacer);
         this->update();
     }
+}
+
+void MainWindow::leaveChatReplyFinished(QNetworkReply *reply){
+    if (reply->error()) {
+        Utils::pushNotification(this, "Something went wrong. We've got error: " + reply->errorString());
+        return;
+    }
+    QJsonObject data = Utils::getJson(reply);
+    if (data["result"] != 0) {
+        Utils::pushNotification(this, data["error"].toString());
+        return;
+    }
+    QLayout* layout = this->ui->previewsContainerWidget->layout();
+    layout->removeItem(this->ui->previewsSpacer);
+    QLayoutItem *child;
+     while ((child = layout->takeAt(0)) != 0) {
+        if (child->widget()->accessibleName() == selectedChatHash) {
+            child->widget()->setParent(NULL);
+            delete child;
+            break;
+        }
+     }
+     while ((child = layout->takeAt(0)) != 0) {
+        if (!child->widget()->accessibleName().isEmpty()) {
+            switchToAnotherChat(qobject_cast<ChatPreview*>(child->widget())->getHash());
+            break;
+        }
+     }
+    layout->addItem(this->ui->previewsSpacer);
 }
 
 
@@ -171,4 +243,38 @@ void MainWindow::on_sendMessageIcon_clicked()
         QNetworkAccessManager* accessManager = new QNetworkAccessManager(this);
         accessManager->post(request, Utils::constructPostData(&raw_data));
     }
+}
+
+void MainWindow::on_leaveChatButton_clicked()
+{
+    QuestionDialog dialog("Are you sure want to leave?", this);
+    int result = dialog.exec();
+    if (result == 1) {
+        QMap<QString, QVariant> raw_data;
+        raw_data["chash"] = selectedChatHash;
+        QNetworkRequest request = Utils::constructRequest("/chat/leave/", Utils::getToken());
+        QNetworkAccessManager* accessManager = new QNetworkAccessManager(this);
+        connect(accessManager, SIGNAL(finished(QNetworkReply*)), this,
+            SLOT(leaveChatReplyFinished(QNetworkReply*)));
+        accessManager->post(request, Utils::constructPostData(&raw_data));
+    }
+}
+
+void MainWindow::on_updateChatListButton_clicked()
+{
+    chatListRequest();
+}
+
+void MainWindow::on_changeChatNameButton_clicked()
+{
+    ChangeChatNameDialog dialog(selectedChatHash, this);
+    dialog.exec();
+}
+
+
+
+void MainWindow::on_addToChatButton_clicked(bool checked)
+{
+    AddChatMemberDialog dialog(selectedChatHash, this);
+    dialog.exec();
 }

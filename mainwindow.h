@@ -18,6 +18,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     void updateMessages();
+    void switchToAnotherChat(QString chash);
     ~MainWindow();
 
 private slots:
@@ -31,14 +32,29 @@ private slots:
 
     void getMessagesReplyFinished(QNetworkReply* reply);
 
+    void leaveChatReplyFinished(QNetworkReply* reply);
+
     void on_sendMessageIcon_clicked();
+
+    void chatSwitched(QString chash);
+
+    void on_leaveChatButton_clicked();
+
+    void on_updateChatListButton_clicked();
+
+    void on_changeChatNameButton_clicked();
+
+    void on_addToChatButton_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;
     void updateChatList(QJsonArray chats);
+    void clearMessagesList();
+    void chatListRequest();
     QString selectedChatHash = "";
     QTimer* messagesTimer = nullptr;
     void pushMessage(QLayout* layout, QJsonObject message);
+    QTimer* chatListTimer = nullptr;
     int lmid = -1;
 };
 #endif // MAINWINDOW_H

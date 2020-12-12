@@ -16,8 +16,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addchatmemberdialog.cpp \
     addcontactdialog.cpp \
     authdialog.cpp \
+    changechatnamedialog.cpp \
     chatmessage.cpp \
     chatpreview.cpp \
     main.cpp \
@@ -27,8 +29,10 @@ SOURCES += \
     utils.cpp
 
 HEADERS += \
+    addchatmemberdialog.h \
     addcontactdialog.h \
     authdialog.h \
+    changechatnamedialog.h \
     chatmessage.h \
     chatpreview.h \
     mainwindow.h \
@@ -37,8 +41,10 @@ HEADERS += \
     utils.h
 
 FORMS += \
+    addchatmemberdialog.ui \
     addcontactdialog.ui \
     authdialog.ui \
+    changechatnamedialog.ui \
     chatmessage.ui \
     chatpreview.ui \
     mainwindow.ui \

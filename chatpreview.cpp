@@ -1,5 +1,6 @@
 #include "chatpreview.h"
 #include "ui_chatpreview.h"
+#include "mainwindow.h"
 
 ChatPreview::ChatPreview(QJsonObject chat, QWidget *parent) :
     QWidget(parent),
@@ -8,6 +9,7 @@ ChatPreview::ChatPreview(QJsonObject chat, QWidget *parent) :
     ui->setupUi(this);
     this->setHash(chat.value("hash").toString());
     this->setName(chat.value("name").toString());
+    this->setAccessibleName(this->getHash());
     this->ui->chatName->setText("Name: " + this->getName());
     int members_amount = chat.value("members").toArray().size();
     this->ui->membersIndicator->setText(QString::number(members_amount) + " members");
@@ -15,6 +17,15 @@ ChatPreview::ChatPreview(QJsonObject chat, QWidget *parent) :
 
 void ChatPreview::setHash(QString hash) {
     this->hash=hash;
+}
+
+void ChatPreview::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        emit chatClicked(this->getHash());
+        event->accept();
+        return;
+    }
+    event->ignore();
 }
 
 QString ChatPreview::getHash() {

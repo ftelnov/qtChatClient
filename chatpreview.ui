@@ -32,62 +32,85 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: rgb(24, 28, 45);
-border: 1px solid rgb(193, 195, 208);
-border-radius: 8px;</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <property name="spacing">
-      <number>6</number>
+    <widget class="QWidget" name="chatPreviewBackground" native="true">
+     <property name="styleSheet">
+      <string notr="true">background: rgb(24, 28, 45);
+border: 1px solid rgb(193, 195, 208);
+border-radius: 8px;</string>
      </property>
-     <item>
-      <widget class="QLabel" name="chatName">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">font: 75 9pt &quot;Liberation Mono&quot;;
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="chatName">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 75 9pt &quot;Liberation Mono&quot;;
 color: rgb(193, 195, 208);
 font-weight: bold;
 font-size: 12px;
 border: none;
 padding-left: 4px;</string>
-       </property>
-       <property name="text">
-        <string>Some awesome name</string>
-       </property>
-       <property name="textFormat">
-        <enum>Qt::PlainText</enum>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="membersIndicator">
-       <property name="styleSheet">
-        <string notr="true">font: 75 9pt &quot;Liberation Mono&quot;;
+        </property>
+        <property name="text">
+         <string>Some awesome name</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::PlainText</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="membersIndicator">
+        <property name="styleSheet">
+         <string notr="true">font: 75 9pt &quot;Liberation Mono&quot;;
 color: rgb(193, 195, 208);
 font-weight: bold;
 font-size: 12px;
 border: none;
 padding-left: 4px;</string>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
  <resources/>
  <connections/>
+ <slots>
+  <signal>chatClicked(QString)</signal>
+ </slots>
 </ui>
